@@ -33,9 +33,8 @@ function agregarEntrada(entrada) {
     entrada.cantidad -= cantidad;
     alert(`Se agregaron ${cantidad} entradas ${entrada.tipo} al carrito.`);
 
-    localStorage.setItem('carrito', JSON.stringify(carrito)); // Almacenar carrito en el almacenamiento local
-
-    mostrarCarrito(); // Actualizar la visualización del carrito
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    mostrarCarrito();
 }
 
 function mostrarEntradasDisponibles() {
@@ -56,11 +55,9 @@ function mostrarCarrito() {
     carritoContenedor.innerHTML = '';
 
     const carritoAlmacenado = JSON.parse(localStorage.getItem('carrito'));
-    const informacionUsuarioAlmacenada = JSON.parse(localStorage.getItem('informacionUsuario'));
 
     if (carritoAlmacenado && carritoAlmacenado.length > 0) {
         let total = 0;
-
         carritoAlmacenado.forEach(entrada => {
             const entradaElement = document.createElement('p');
             entradaElement.textContent = `${entrada.cantidad} entradas ${entrada.tipo} $${entrada.precio} cada una. Subtotal: $${entrada.subtotal}`;
@@ -70,21 +67,21 @@ function mostrarCarrito() {
 
         const totalElement = document.createElement('p');
         totalElement.textContent = `Total: $${total}`;
-
         carritoContenedor.appendChild(totalElement);
     } else {
         carritoContenedor.textContent = 'El carrito está vacío.';
     }
 }
 
+// MOSTRAR U OCULTAR CARRITO
 function toggleCarrito() {
     const carritoContenedor = document.getElementById('carrito-container');
 
     if (carritoContenedor.classList.contains('hidden')) {
-        carritoContenedor.classList.remove('hidden'); // Mostrar el carrito
-        mostrarCarrito(); // Actualizar la visualización del carrito
+        carritoContenedor.classList.remove('hidden');
+        mostrarCarrito();
     } else {
-        carritoContenedor.classList.add('hidden'); // Ocultar el carrito
+        carritoContenedor.classList.add('hidden');
     }
 }
 
@@ -94,6 +91,7 @@ function realizarCompra() {
         return;
     }
 
+    // INFORMACION DEL USUARIO
     const nombre = prompt('Ingrese su nombre:');
     const email = prompt('Ingrese su correo electrónico:');
     const telefono = prompt('Ingrese su número de teléfono:');
@@ -106,15 +104,13 @@ function realizarCompra() {
 
     alert('Usted ha reservado sus entradas satisfactoriamente. Por email le llegará el comprobante para realizar el pago.\nGracias por usar nuestra página.');
 
-    // Actualizar la información del usuario y reiniciar el carrito
     localStorage.setItem('informacionUsuario', JSON.stringify(informacionUsuario));
     localStorage.removeItem('carrito');
     carrito = [];
-
-    mostrarCarrito(); // Actualizar la visualización del carrito
+    mostrarCarrito();
 }
 
-// Verificar si hay carrito y/o información de usuario almacenados en el almacenamiento local
+// VERIFICAR SI HAY INFORMACION GUARDADA EN EL LOCAL STORAGE
 const carritoAlmacenado = JSON.parse(localStorage.getItem('carrito'));
 const informacionUsuarioAlmacenada = JSON.parse(localStorage.getItem('informacionUsuario'));
 
@@ -128,14 +124,14 @@ if (informacionUsuarioAlmacenada) {
 
 mostrarEntradasDisponibles();
 
-// Agregar botón "Mostrar carrito"
+// BOTON MOSTRAR CARRITO
 const mostrarCarritoButton = document.createElement('button');
 mostrarCarritoButton.textContent = 'Mostrar carrito';
 mostrarCarritoButton.classList.add('button');
 mostrarCarritoButton.addEventListener('click', toggleCarrito);
 document.getElementById('carrito-button-container').appendChild(mostrarCarritoButton);
 
-// Agregar botón "Realizar compra"
+// BOTON REALIZAR COMPRA
 const realizarCompraButton = document.createElement('button');
 realizarCompraButton.textContent = 'Realizar compra';
 realizarCompraButton.classList.add('button');
